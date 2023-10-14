@@ -17,16 +17,19 @@ router.post("/signup", async (req, res)=>{
 
         // creating jwt token and sending response...
         const token = jwt.sign(user.id, process.env.JWT_SECRET)
-        res.status(200).json(token)
+        const success = true
+        res.status(200).json({success, token})
 
     }catch(err){
         // if email is not unique...
+        const success = false
         if (err.name === 'MongoServerError' && err.code === 11000){
-            res.status(400).send("email already exists")
+            res.status(400).json({success, message: "email already exists"})
         }
         else{
             // other errors...
-            res.status(500).send("Server error")
+            const success = false
+            res.status(500).json({success, message: "Server Error"})
             console.log(err)
         }
     }
@@ -37,19 +40,23 @@ router.post("/login", async(req, res) =>{
     try{
         let user = await User.findOne({email: req.body.email})
         if(!user){
-            return res.status(400).send("Wrong credentials")
+            const success = false
+            return res.status(400).json({success, message: "Wrong credentials"})
         }
 
         const isCorrect = await bcrypt.compare(req.body.password, user.password)
         if(!isCorrect){
-            return res.status(400).send("Wrong credentials")
+            const success = false
+            return res.status(400).json({success, message:"Wrong credentials"})
         }
 
         const token = jwt.sign(user.id, process.env.JWT_SECRET)
-        res.status(200).json({user, token})
+        const success = true
+        res.status(200).json({success, token})
 
     }catch(err){
-        res.status(400).send("Server error")
+        const success = false
+        res.status(400).json({success, message: "Server error"})
         console.error(err)
     }
 

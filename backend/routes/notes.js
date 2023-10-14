@@ -32,7 +32,7 @@ router.post("/addnote", fetchuser, async (req, res) => {
 // ROUTE 3: update note...
 router.put("/updatenote/:id", fetchuser , async(req, res) => {
     try {
-        // const {title, description, tag} = req.body
+        const {title, description, tag} = req.body
         const note = await Notes.findById(req.params.id)
         if(!note){
             res.status(404).send("Note not found")
@@ -42,8 +42,8 @@ router.put("/updatenote/:id", fetchuser , async(req, res) => {
             res.status(400).send("You can only update your own note")
         }
 
-        const newNotes = await Notes.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
-        // const newNotes = await Notes.findByIdAndUpdate(req.params, {$set: {title, description, tag}}, {new: true})
+        // const newNotes = await Notes.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true})
+        const newNotes = await Notes.findByIdAndUpdate(req.params.id, {$set: {title, description, tag}}, {new: true})
         res.status(200).send(newNotes)
 
     } catch (err) {

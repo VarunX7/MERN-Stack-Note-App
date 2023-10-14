@@ -1,8 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose');
+var cors = require('cors')
 require('dotenv').config()
 const app = express()
+
 app.use(express.json())
+app.use(cors())
 
 const connectDb = async()=>{
     await mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
