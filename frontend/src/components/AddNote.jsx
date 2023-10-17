@@ -3,7 +3,7 @@ import noteContext from '../context/notes/noteContext'
 
 const AddNote = () => {
     const context = useContext(noteContext)
-    const { addNote } = context
+    const { addNote } = context    
 
     const [newNote, setNewNote] = useState({title: "", description: "", tag: ""})
 
@@ -27,7 +27,7 @@ const AddNote = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="description" className="form-label">Description</label>
-            <input type="text" className="form-control" id="description"  name="description" value={newNote.description} onChange={onChange}/>
+            <textarea className="form-control" id="description"  name="description" value={newNote.description} onChange={onChange} style={{height: '130px'}}></textarea>
           </div>
           <div className="mb-3">
             <label htmlFor="tag" className="form-label" >Tag</label>
@@ -36,6 +36,7 @@ const AddNote = () => {
           <button type="submit" className="btn btn-primary" onClick={handleClick}>Save</button>
         </form>
       </div>
+      <hr class="border border-dark border-1 opacity-50"></hr>
     </div>
   )
 }

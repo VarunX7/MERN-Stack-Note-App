@@ -1,15 +1,26 @@
-import React, {useEffect} from 'react'
-import { Link, useLocation } from "react-router-dom";
+import React, { useContext, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import alertContext from '../context/alert/alertContext';
 
 const Navbar = () => {
-    let location = useLocation();
+    let location = useLocation()
+    let navigate = useNavigate()
+    const context = useContext(alertContext)
+    const {getAlert} = context
 
     useEffect(() => {
         console.log(location.pathname)
     }, [location]);
 
+    const handleLogout = ()=>{
+        localStorage.removeItem('token')
+        navigate('/login')
+        getAlert("success", "Logged out successfully")
+    }
+
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <>
+        <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">iNotebook</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="/navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,20 +29,21 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/' && 'active'}`}aria-current="page" to="/">Home</Link>
+                            <Link className={`nav-link ${location.pathname === '/' && 'active'}`} aria-current="page" to="/">Home</Link>
                         </li>
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === '/about' && 'active'}`} to="/about">About</Link>
                         </li>
                     </ul>
-                    <form className="d-flex" role="search">
-                        {/* <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" /> */}
-                        <Link to="/login" className="btn btn-outline-primary mx-1" href="#" role="button">Log In</Link>
-                        <Link to="/signup" className="btn btn-primary mx-1" href="#" role="button">Sign Up</Link>
+                    {localStorage.getItem('token') ? <button className="btn btn-primary mx-1" onClick={handleLogout}>Log Out</button> : <form className="d-flex" role="search">
+                        <Link to="/login" className="btn btn-outline-primary mx-1" role="button">Log In</Link>
+                        <Link to="/signup" className="btn btn-primary mx-1" role="button">Sign Up</Link>
                     </form>
+                    }
                 </div>
             </div>
         </nav>
+        </>
     )
 }
 

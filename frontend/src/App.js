@@ -6,17 +6,20 @@ import {
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
-import Alert from "./components/Alert";
 import NoteState from './context/notes/NoteState';
+import AlertState from './context/alert/AlertState';
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import Alert from './components/Alert';
 
 function App() {
+
   return (
     <BrowserRouter>
+    <AlertState>
       <NoteState>
         < Navbar />
-        < Alert message="Alert"/>
+        < Alert />
         <div className="container">
           <Routes>
             < Route path='/' element={< Home />} />
@@ -26,7 +29,7 @@ function App() {
           </Routes>
         </div>
       </NoteState>
-
+      </AlertState>
     </BrowserRouter>
   );
 }

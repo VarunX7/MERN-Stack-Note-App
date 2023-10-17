@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import noteContext from './noteContext'
+import alertContext from '../alert/alertContext'
 
 const NoteState = (props) => {
     const host = 'http://localhost:8000'      
+    const context = useContext(alertContext)
+    const {getAlert} = context
 
     const [notes, setNotes] = useState([])
 
@@ -32,6 +35,7 @@ const NoteState = (props) => {
         
         const data = await response.json()
         setNotes(notes.concat(data))
+        getAlert("success", "New note successfully added")
     }
 
     // DELETE NOTE...
@@ -48,6 +52,7 @@ const NoteState = (props) => {
         console.log(data)
         const newNotes = notes.filter((note) =>{return note._id !== id})
         setNotes(newNotes)
+        getAlert("success", "Note successfully deleted")
     }
 
     // EDIT A NOTE...
@@ -74,6 +79,7 @@ const NoteState = (props) => {
             }
             return notes
         })
+        getAlert("success", "Note successfully updated")
     }
 
     return (

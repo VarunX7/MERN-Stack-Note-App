@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import NoteContext from '../context/notes/noteContext'
 import NoteItem from './NoteItem'
-// import AddNote from './AddNote'
+import { useNavigate } from 'react-router-dom'
 
 const Notes = () => {
     const context = useContext(NoteContext)
@@ -9,12 +9,18 @@ const Notes = () => {
     const ref = useRef(null)
     const closeRef = useRef(null)
     const [newNote, setNewNote] = useState({id: "", e_title: "", e_description: "", e_tag: ""})
+    let navigate = useNavigate()
 
     useEffect(() => {
-        getNotes()
+        if(localStorage.getItem('token')){
+            getNotes()
+        }
+        else{
+            navigate('/login')
+        }
         // eslint-disable-next-line
     }, [notes])
-
+        
     const editNote = (currentNote) => {
         ref.current.click()
         setNewNote({id: currentNote._id, e_title: currentNote.title, e_description: currentNote.description, e_tag: currentNote.tag})
@@ -51,8 +57,7 @@ const Notes = () => {
                                     <input type="text" className="form-control" id="e_title" name="e_title" aria-describedby="e_title" value={newNote.e_title} onChange={onChange} />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="e_description" className="form-label">Description</label>
-                                    <input type="text" className="form-control" id="e_description" name="e_description" value={newNote.e_description} onChange={onChange} />
+                                <textarea className="form-control" id="description"  name="description" value={newNote.description} onChange={onChange} style={{height: '130px'}}></textarea>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="e_tag" className="form-label">Tag</label>

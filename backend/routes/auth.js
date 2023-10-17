@@ -30,7 +30,7 @@ router.post("/signup", async (req, res)=>{
             // other errors...
             const success = false
             res.status(500).json({success, message: "Server Error"})
-            console.log(err)
+            // console.log(err)
         }
     }
 })
@@ -57,7 +57,7 @@ router.post("/login", async(req, res) =>{
     }catch(err){
         const success = false
         res.status(400).json({success, message: "Server error"})
-        console.error(err)
+        // console.error(err)
     }
 
 })
@@ -69,7 +69,7 @@ router.get("/getuser", fetchuser, async(req, res) =>{
         res.send(user)
 
     }catch(err){
-        console.error(err)
+        // console.error(err)
         res.status(500).send("Server error")
     }
 
